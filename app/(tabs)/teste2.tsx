@@ -62,6 +62,11 @@ export default function Teste2Screen() {
     setSelectedNoticeId(null); // Reseta o ID selecionado
   };
 
+  // Função para alternar a exibição dos botões
+  const toggleButtons = (noticeId) => {
+    setSelectedNoticeId(selectedNoticeId === noticeId ? null : noticeId);
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -103,13 +108,15 @@ export default function Teste2Screen() {
         <ThemedText type="subtitle">Lista de Avisos:</ThemedText>
         {notices.map(n => (
           <ThemedView key={n._id} style={styles.noticeContainer}>
-            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }}>
+            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }} onPress={() => toggleButtons(n._id)}>
               {n.notice}
             </ThemedText>
-            <View style={styles.buttonGroup}>
-              <Button title="Editar" onPress={() => handleEdit(n)} />
-              <Button title="Deletar" onPress={() => handleDelete(n._id)} />
-            </View>
+            {selectedNoticeId === n._id && (
+              <View style={styles.buttonGroup}>
+                <Button title="Editar" onPress={() => handleEdit(n)} />
+                <Button title="Deletar" onPress={() => handleDelete(n._id)} />
+              </View>
+            )}
           </ThemedView>
         ))}
       </ThemedView>

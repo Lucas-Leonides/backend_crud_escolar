@@ -23,19 +23,19 @@ export default function HomeScreen() {
         <ThemedText type="subtitle">Use os botões de nanvegação na parte inferior para conferir as funcionalidades
         </ThemedText>
         <ThemedText>
-          Adicionar texto aqui 
+          Nossa aplicação mostra as três principais funcionalidades além desta página de explicação
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
+        <ThemedText type="subtitle">Dentro de cada tela você irá ver a lista com todos os dados que existem </ThemedText>
         <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
+          Se quiser alterar os dados é só clicar nele e selecionar editar ou excluir se desejar.
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+        <ThemedText type="subtitle">O salvamento é automático em nosso banco de dados online</ThemedText>
         <ThemedText>
-          When you're ready, run{' '}
+          Aplicação em melhoria contínua! {' '}
           <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
           <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
           <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}

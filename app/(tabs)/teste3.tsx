@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Button, View, TextInput, useColorScheme } from 'react-native';
+import { Image, StyleSheet, Button, View, TextInput, useColorScheme, ScrollView } from 'react-native';
 import axios from 'axios';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-export default function Teste3Screen() {
-  const [announcements, setAnnouncements] = useState([]);
+export default function Teste2Screen() {
+  const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [announcement, setAnnouncement] = useState('');
-  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState(null);
+  const [notice, setNotice] = useState('');
+  const [selectedNoticeId, setSelectedNoticeId] = useState(null);
   const colorScheme = useColorScheme(); // Detecta o tema atual
 
   useEffect(() => {
-    fetchAnnouncements(); // Busca as anotações ao montar o componente
+    fetchNotices(); // Busca os avisos ao montar o componente
   }, []);
 
-  const fetchAnnouncements = async () => {
+  const fetchNotices = async () => {
     try {
-      const response = await axios.get('http://192.168.0.115:3000/announcements');
-      setAnnouncements(response.data);
+      const response = await axios.get('http://192.168.0.115:3000/general-notices');
+      setNotices(response.data);
     } catch (error) {
-      console.error('Erro ao buscar anotações:', error);
+      console.error('Erro ao buscar avisos:', error);
     } finally {
       setLoading(false);
     }
@@ -30,36 +30,52 @@ export default function Teste3Screen() {
 
   const handleSubmit = async () => {
     try {
-      const announcementData = { announcement };
-      if (selectedAnnouncementId) {
-        await axios.put(`http://192.168.0.115:3000/announcements/${selectedAnnouncementId}`, announcementData);
+      const noticeData = { notice };
+      if (selectedNoticeId) {
+        await axios.put(`http://192.168.0.115:3000/general-notices/${selectedNoticeId}`, noticeData);
       } else {
-        await axios.post('http://192.168.0.115:3000/announcements', announcementData);
+        await axios.post('http://192.168.0.115:3000/general-notices', noticeData);
       }
       resetForm();
-      fetchAnnouncements(); // Atualiza a lista de anotações
+      fetchNotices(); // Atualiza a lista de avisos
     } catch (error) {
-      console.error('Erro ao enviar anotação:', error);
+      console.error('Erro ao enviar aviso:', error);
     }
   };
 
-  const handleEdit = (announcement) => {
-    setAnnouncement(announcement.announcement);
-    setSelectedAnnouncementId(announcement._id);
+  const handleEdit = (notice) => {
+    setNotice(notice.notice);
+    setSelectedNoticeId(notice._id); // Armazena o ID do aviso selecionado
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://192.168.0.115:3000/announcements/${id}`);
-      fetchAnnouncements(); // Atualiza a lista de anotações após a exclusão
+      await axios.delete(`http://192.168.0.115:3000/general-notices/${id}`);
+      fetchNotices(); // Atualiza a lista de avisos após a exclusão
     } catch (error) {
-      console.error('Erro ao deletar anotação:', error);
+      console.error('Erro ao deletar aviso:', error);
     }
   };
 
   const resetForm = () => {
-    setAnnouncement('');
-    setSelectedAnnouncementId(null);
+    setNotice('');
+    setSelectedNoticeId(null); // Reseta o ID selecionado
+  };
+
+  // Função para alternar a exibição dos botões
+  const toggleButtons = (noticeId) => {
+    setSelectedNoticeId(selectedNoticeId === noticeId ? null : noticeId);
+  };
+
+  // Função para tratar a navegação entre campos
+  const handleKeyPress = (field) => {
+    switch (field) {
+      case 'notice':
+        handleSubmit(); // Chama a função de envio ao pressionar Enter no último campo
+        break;
+      default:
+        break;
+    }
   };
 
   if (loading) {
@@ -80,36 +96,39 @@ export default function Teste3Screen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Tela de Anotações de Aula</ThemedText>
+        <ThemedText type="title">Tela de Avisos Gerais</ThemedText>
         <HelloWave />
       </ThemedView>
-      
+
       <ThemedView style={styles.formContainer}>
         <TextInput
           style={[styles.input, { color: colorScheme === 'dark' ? '#fff' : '#000' }]} // Cor do texto
-          placeholder="Anotação"
+          placeholder="Aviso"
           placeholderTextColor={colorScheme === 'dark' ? '#ccc' : '#666'} // Cor do placeholder
-          value={announcement}
-          onChangeText={setAnnouncement}
+          value={notice}
+          onChangeText={setNotice}
+          onSubmitEditing={() => handleKeyPress('notice')} // Chama a função ao pressionar Enter
         />
         <View style={styles.buttonContainer}>
-          <Button title={selectedAnnouncementId ? "Atualizar Anotação" : "Adicionar Anotação"} onPress={handleSubmit} />
+          <Button title={selectedNoticeId ? "Atualizar Aviso" : "Adicionar Aviso"} onPress={handleSubmit} />
           <View style={styles.buttonSpacer} />
           <Button title="Limpar" onPress={resetForm} />
         </View>
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Lista de Anotações:</ThemedText>
-        {announcements.map(a => (
-          <ThemedView key={a._id} style={styles.announcementContainer}>
-            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }}>
-              {a.announcement}
+        <ThemedText type="subtitle">Lista de Avisos:</ThemedText>
+        {notices.map(n => (
+          <ThemedView key={n._id} style={styles.noticeContainer}>
+            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }} onPress={() => toggleButtons(n._id)}>
+              {n.notice}
             </ThemedText>
-            <View style={styles.buttonGroup}>
-              <Button title="Editar" onPress={() => handleEdit(a)} />
-              <Button title="Deletar" onPress={() => handleDelete(a._id)} />
-            </View>
+            {selectedNoticeId === n._id && (
+              <View style={styles.buttonGroup}>
+                <Button title="Editar" onPress={() => handleEdit(n)} />
+                <Button title="Deletar" onPress={() => handleDelete(n._id)} />
+              </View>
+            )}
           </ThemedView>
         ))}
       </ThemedView>
@@ -157,7 +176,7 @@ const styles = StyleSheet.create({
   buttonSpacer: {
     width: 10,
   },
-  announcementContainer: {
+  noticeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -7,6 +7,8 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
+const IP = process.env.IP
+
 export default function Teste1Screen() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +23,7 @@ export default function Teste1Screen() {
   // Função para buscar dados dos alunos
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('https://backend-crud-escolar.onrender.com/students');
+      const response = await axios.get('http://192.168.0.115:3000/students');
       console.log('Alunos recebidos:', response.data); // Log para verificar a resposta
       setStudents(response.data);
     } catch (error) {

@@ -36,10 +36,7 @@ export default function HomeScreen() {
         <ThemedText type="subtitle">O salvamento é automático em nosso banco de dados online</ThemedText>
         <ThemedText>
           Aplicação em melhoria contínua! {' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+          
         </ThemedText>
       </ThemedView>
     </ParallaxScrollView>

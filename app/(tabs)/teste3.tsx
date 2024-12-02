@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Button, View, TextInput, useColorScheme, ScrollView } from 'react-native';
+import { Image, StyleSheet, Button, View, TextInput } from 'react-native';
 import axios from 'axios';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-export default function Teste2Screen() {
-  const [notices, setNotices] = useState([]);
+export default function Teste3Screen() {
+  const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [notice, setNotice] = useState('');
-  const [selectedNoticeId, setSelectedNoticeId] = useState(null);
-  const colorScheme = useColorScheme(); // Detecta o tema atual
+
+  // Estado para o formulário
+  const [announcement, setAnnouncement] = useState('');
+  const [selectedAnnouncementId, setSelectedAnnouncementId] = useState(null);
 
   useEffect(() => {
-    fetchNotices(); // Busca os avisos ao montar o componente
+    fetchAnnouncements(); // Busca as anotações ao montar o componente
   }, []);
 
-  const fetchNotices = async () => {
+  const fetchAnnouncements = async () => {
     try {
-      const response = await axios.get('http://192.168.0.115:3000/general-notices');
-      setNotices(response.data);
+      const response = await axios.get('http://192.168.0.115:3000/announcements');
+      setAnnouncements(response.data);
     } catch (error) {
-      console.error('Erro ao buscar avisos:', error);
+      console.error('Erro ao buscar anotações:', error);
     } finally {
       setLoading(false);
     }
@@ -30,52 +31,38 @@ export default function Teste2Screen() {
 
   const handleSubmit = async () => {
     try {
-      const noticeData = { notice };
-      if (selectedNoticeId) {
-        await axios.put(`http://192.168.0.115:3000/general-notices/${selectedNoticeId}`, noticeData);
+      const announcementData = { announcement };
+      if (selectedAnnouncementId) {
+        // Atualiza uma anotação existente
+        await axios.put(`http://192.168.0.115:3000/announcements/${selectedAnnouncementId}`, announcementData);
       } else {
-        await axios.post('http://192.168.0.115:3000/general-notices', noticeData);
+        // Cria uma nova anotação
+        await axios.post('http://192.168.0.115:3000/announcements', announcementData);
       }
       resetForm();
-      fetchNotices(); // Atualiza a lista de avisos
+      fetchAnnouncements(); // Atualiza a lista de anotações
     } catch (error) {
-      console.error('Erro ao enviar aviso:', error);
+      console.error('Erro ao enviar anotação:', error);
     }
   };
 
-  const handleEdit = (notice) => {
-    setNotice(notice.notice);
-    setSelectedNoticeId(notice._id); // Armazena o ID do aviso selecionado
+  const handleEdit = (announcement) => {
+    setAnnouncement(announcement.announcement);
+    setSelectedAnnouncementId(announcement._id);
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://192.168.0.115:3000/general-notices/${id}`);
-      fetchNotices(); // Atualiza a lista de avisos após a exclusão
+      await axios.delete(`http://192.168.0.115:3000/announcements/${id}`);
+      fetchAnnouncements(); // Atualiza a lista de anotações após a exclusão
     } catch (error) {
-      console.error('Erro ao deletar aviso:', error);
+      console.error('Erro ao deletar anotação:', error);
     }
   };
 
   const resetForm = () => {
-    setNotice('');
-    setSelectedNoticeId(null); // Reseta o ID selecionado
-  };
-
-  // Função para alternar a exibição dos botões
-  const toggleButtons = (noticeId) => {
-    setSelectedNoticeId(selectedNoticeId === noticeId ? null : noticeId);
-  };
-
-  // Função para tratar a navegação entre campos
-  const handleKeyPress = (field) => {
-    switch (field) {
-      case 'notice':
-        handleSubmit(); // Chama a função de envio ao pressionar Enter no último campo
-        break;
-      default:
-        break;
-    }
+    setAnnouncement('');
+    setSelectedAnnouncementId(null);
   };
 
   if (loading) {
@@ -96,39 +83,36 @@ export default function Teste2Screen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Tela de Avisos Gerais</ThemedText>
+        <ThemedText type="title">Tela de Anotações de Aula</ThemedText>
         <HelloWave />
       </ThemedView>
-
+      
       <ThemedView style={styles.formContainer}>
         <TextInput
-          style={[styles.input, { color: colorScheme === 'dark' ? '#fff' : '#000' }]} // Cor do texto
-          placeholder="Aviso"
-          placeholderTextColor={colorScheme === 'dark' ? '#ccc' : '#666'} // Cor do placeholder
-          value={notice}
-          onChangeText={setNotice}
-          onSubmitEditing={() => handleKeyPress('notice')} // Chama a função ao pressionar Enter
+          style={styles.input}
+          placeholder="Anotação"
+          placeholderTextColor="#fff"
+          value={announcement}
+          onChangeText={setAnnouncement}
         />
         <View style={styles.buttonContainer}>
-          <Button title={selectedNoticeId ? "Atualizar Aviso" : "Adicionar Aviso"} onPress={handleSubmit} />
+          <Button title={selectedAnnouncementId ? "Atualizar Anotação" : "Adicionar Anotação"} onPress={handleSubmit} />
           <View style={styles.buttonSpacer} />
           <Button title="Limpar" onPress={resetForm} />
         </View>
       </ThemedView>
 
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Lista de Avisos:</ThemedText>
-        {notices.map(n => (
-          <ThemedView key={n._id} style={styles.noticeContainer}>
-            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }} onPress={() => toggleButtons(n._id)}>
-              {n.notice}
+        <ThemedText type="subtitle">Lista de Anotações:</ThemedText>
+        {announcements.map(a => (
+          <ThemedView key={a._id} style={styles.announcementContainer}>
+            <ThemedText style={styles.announcementText}>
+              {a.announcement}
             </ThemedText>
-            {selectedNoticeId === n._id && (
-              <View style={styles.buttonGroup}>
-                <Button title="Editar" onPress={() => handleEdit(n)} />
-                <Button title="Deletar" onPress={() => handleDelete(n._id)} />
-              </View>
-            )}
+            <View style={styles.buttonGroup}>
+              <Button title="Editar" onPress={() => handleEdit(a)} />
+              <Button title="Deletar" onPress={() => handleDelete(a._id)} />
+            </View>
           </ThemedView>
         ))}
       </ThemedView>
@@ -167,6 +151,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
+    color: '#fff',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -176,13 +161,17 @@ const styles = StyleSheet.create({
   buttonSpacer: {
     width: 10,
   },
-  noticeContainer: {
+  announcementContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     paddingVertical: 10,
+  },
+  announcementText: {
+    flex: 1,
+    color: '#FFFFFF',
   },
   buttonGroup: {
     flexDirection: 'row',

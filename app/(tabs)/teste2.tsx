@@ -108,7 +108,7 @@ export default function Teste2Screen() {
         <ThemedText type="subtitle">Lista de Avisos:</ThemedText>
         {notices.map(n => (
           <ThemedView key={n._id} style={styles.noticeContainer}>
-            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }} onPress={() => toggleButtons(n._id)}>
+            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000', flex: 1 }} onPress={() => toggleButtons(n._id)}>
               {n.notice}
             </ThemedText>
             {selectedNoticeId === n._id && (
@@ -171,9 +171,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     paddingVertical: 10,
+    flexWrap: 'wrap', // Permite que o texto quebre em várias linhas
   },
   buttonGroup: {
     flexDirection: 'row',
     gap: 10,
+    marginLeft: 10, // Adiciona margem à esquerda para o botão de deletar
   },
 });

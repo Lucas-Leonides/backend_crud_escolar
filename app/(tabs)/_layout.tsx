@@ -36,21 +36,21 @@ export default function TabLayout() {
       <Tabs.Screen
         name="teste1"
         options={{
-          title: 'teste1',
+          title: 'Alunos',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="teste2"
         options={{
-          title: 'teste2',
+          title: 'Avisos gerais',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="teste3"
         options={{
-          title: 'teste3',
+          title: 'Anotações de aula',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Button, View, TextInput } from 'react-native';
+import { Image, StyleSheet, Button, View, TextInput, useColorScheme } from 'react-native';
 import axios from 'axios';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -9,10 +9,9 @@ import { ThemedView } from '@/components/ThemedView';
 export default function Teste2Screen() {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Estado para o formulário
   const [notice, setNotice] = useState('');
   const [selectedNoticeId, setSelectedNoticeId] = useState(null);
+  const colorScheme = useColorScheme(); // Detecta o tema atual
 
   useEffect(() => {
     fetchNotices(); // Busca os avisos ao montar o componente
@@ -33,10 +32,8 @@ export default function Teste2Screen() {
     try {
       const noticeData = { notice };
       if (selectedNoticeId) {
-        // Atualiza um aviso existente
         await axios.put(`http://192.168.0.115:3000/general-notices/${selectedNoticeId}`, noticeData);
       } else {
-        // Cria um novo aviso
         await axios.post('http://192.168.0.115:3000/general-notices', noticeData);
       }
       resetForm();
@@ -86,12 +83,12 @@ export default function Teste2Screen() {
         <ThemedText type="title">Tela de Avisos Gerais</ThemedText>
         <HelloWave />
       </ThemedView>
-      
+
       <ThemedView style={styles.formContainer}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { color: colorScheme === 'dark' ? '#fff' : '#000' }]} // Cor do texto
           placeholder="Aviso"
-          placeholderTextColor="#fff"
+          placeholderTextColor={colorScheme === 'dark' ? '#ccc' : '#666'} // Cor do placeholder
           value={notice}
           onChangeText={setNotice}
         />
@@ -106,7 +103,7 @@ export default function Teste2Screen() {
         <ThemedText type="subtitle">Lista de Avisos:</ThemedText>
         {notices.map(n => (
           <ThemedView key={n._id} style={styles.noticeContainer}>
-            <ThemedText style={styles.noticeText}>
+            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }}>
               {n.notice}
             </ThemedText>
             <View style={styles.buttonGroup}>
@@ -151,7 +148,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
-    color: '#fff',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -168,10 +164,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     paddingVertical: 10,
-  },
-  noticeText: {
-    flex: 1,
-    color: '#FFFFFF',
   },
   buttonGroup: {
     flexDirection: 'row',

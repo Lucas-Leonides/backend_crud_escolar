@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Button, View, TextInput } from 'react-native';
+import { Image, StyleSheet, Button, View, TextInput, useColorScheme } from 'react-native';
 import axios from 'axios';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -9,10 +9,9 @@ import { ThemedView } from '@/components/ThemedView';
 export default function Teste3Screen() {
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Estado para o formulário
   const [announcement, setAnnouncement] = useState('');
   const [selectedAnnouncementId, setSelectedAnnouncementId] = useState(null);
+  const colorScheme = useColorScheme(); // Detecta o tema atual
 
   useEffect(() => {
     fetchAnnouncements(); // Busca as anotações ao montar o componente
@@ -33,10 +32,8 @@ export default function Teste3Screen() {
     try {
       const announcementData = { announcement };
       if (selectedAnnouncementId) {
-        // Atualiza uma anotação existente
         await axios.put(`http://192.168.0.115:3000/announcements/${selectedAnnouncementId}`, announcementData);
       } else {
-        // Cria uma nova anotação
         await axios.post('http://192.168.0.115:3000/announcements', announcementData);
       }
       resetForm();
@@ -89,9 +86,9 @@ export default function Teste3Screen() {
       
       <ThemedView style={styles.formContainer}>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { color: colorScheme === 'dark' ? '#fff' : '#000' }]} // Cor do texto
           placeholder="Anotação"
-          placeholderTextColor="#fff"
+          placeholderTextColor={colorScheme === 'dark' ? '#ccc' : '#666'} // Cor do placeholder
           value={announcement}
           onChangeText={setAnnouncement}
         />
@@ -106,7 +103,7 @@ export default function Teste3Screen() {
         <ThemedText type="subtitle">Lista de Anotações:</ThemedText>
         {announcements.map(a => (
           <ThemedView key={a._id} style={styles.announcementContainer}>
-            <ThemedText style={styles.announcementText}>
+            <ThemedText style={{ color: colorScheme === 'dark' ? '#fff' : '#000' }}>
               {a.announcement}
             </ThemedText>
             <View style={styles.buttonGroup}>
@@ -151,7 +148,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
-    color: '#fff',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -168,10 +164,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     paddingVertical: 10,
-  },
-  announcementText: {
-    flex: 1,
-    color: '#FFFFFF',
   },
   buttonGroup: {
     flexDirection: 'row',

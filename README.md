@@ -1,4 +1,4 @@
-# Projeto de Cadastro de Alunos
+# Projeto de Cadastro de Alunos (para acessar o front end, vá para a branch-terciaria)
 
 Este é um projeto de aplicação mobile desenvolvido com **React Native** e **Expo**, que permite o cadastro de alunos, exibição de avisos gerais e anotações de aula. O backend da aplicação é construído com **Node.js**.
 

@@ -99,7 +99,7 @@ export default function Teste1Screen() {
       headerBackgroundColor={{ light: '#fff', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={require('@/assets/images/logo_mediotec.png')}
           style={styles.reactLogo}
         />
       }>
@@ -142,9 +142,13 @@ export default function Teste1Screen() {
           onChangeText={setClassName}
         />
         <View style={styles.buttonContainer}>
-          <Button title={selectedStudentId ? "Atualizar Aluno" : "Adicionar Aluno"} onPress={handleSubmit} />
+          <Button title={selectedStudentId ? "Atualizar Aluno" : "Adicionar Aluno"} onPress={handleSubmit}
+          color="#683ba8" />
           <View style={styles.buttonSpacer} />
-          <Button title="Limpar" onPress={resetForm} />
+          <Button title="Limpar" onPress={resetForm}
+          color="#683ba8"
+           />
+          
         </View>
       </ThemedView>
 
@@ -158,8 +162,10 @@ export default function Teste1Screen() {
               </ThemedText>
               {showButtons === student._id && (
                 <View style={styles.buttonGroup}>
-                  <Button title="Editar" onPress={() => handleEdit(student)} />
-                  <Button title="Deletar" onPress={() => handleDelete(student._id)} />
+                  <Button title="Editar" onPress={() => handleEdit(student)} 
+                    color="#683ba8"/>
+                  <Button title="Deletar" onPress={() => handleDelete(student._id)}
+                  color="#683ba8" />
                 </View>
               )}
             </ThemedView>
@@ -186,9 +192,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
+    height: '100%',
+    width: '100%',
+    bottom: -35,
     left: 0,
     position: 'absolute',
   },
@@ -201,6 +207,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     padding: 10,
+    borderRadius:20,
   },
   buttonContainer: {
     flexDirection: 'row',

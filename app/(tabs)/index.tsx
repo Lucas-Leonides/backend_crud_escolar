@@ -11,32 +11,36 @@ export default function HomeScreen() {
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={require('@/assets/images/logo_mediotec.png')}
           style={styles.reactLogo}
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Bem vindo!</ThemedText>
+        <ThemedText type="title" style={styles.titleText}>Bem-vindo ao Mundo Mágico da Educação!</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Use os botões de nanvegação na parte inferior para conferir as funcionalidades
+        <ThemedText type="subtitle" style={styles.subtitleText}>
+          Cadastre seus alunos como se estivesse na lista de Grifinória!
         </ThemedText>
-        <ThemedText>
-          Nossa aplicação mostra as três principais funcionalidades além desta página de explicação
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Dentro de cada tela você irá ver a lista com todos os dados que existem </ThemedText>
-        <ThemedText>
-          Se quiser alterar os dados é só clicar nele e selecionar editar ou excluir se desejar.
+        <ThemedText style={styles.bodyText}>
+          Utilize nossa aplicação para gerenciar alunos e visualizar avisos importantes!
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">O salvamento é automático em nosso banco de dados online</ThemedText>
-        <ThemedText>
-          Aplicação em melhoria contínua! {' '}
-          
+        <ThemedText type="subtitle" style={styles.subtitleText}>
+          Veja os avisos gerais e anotações de aula
+        </ThemedText>
+        <ThemedText style={styles.bodyText}>
+          Mantenha-se atualizado como um verdadeiro membro da Ordem da Fênix!
+        </ThemedText>
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle" style={styles.subtitleText}>
+          Navegue facilmente entre as funcionalidades
+        </ThemedText>
+        <ThemedText style={styles.bodyText}>
+          Nossa aplicação é intuitiva e feita para você brilhar como um bruxo nas aulas!
         </ThemedText>
       </ThemedView>
     </ParallaxScrollView>
@@ -47,17 +51,49 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 16,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    backgroundColor: '#683ba8',
+    borderRadius: 8,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 4 },
   },
   stepContainer: {
     gap: 8,
-    marginBottom: 8,
+    marginBottom: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#ffffff10',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 4 },
   },
   reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+    height: 200,
+    width: '100%',
+    resizeMode: 'contain',
+    marginTop: Platform.OS === 'ios' ? 50 : 30,
+  },
+  titleText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  subtitleText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#f0f0f0',
+    marginBottom: 4,
+  },
+  bodyText: {
+    fontSize: 16,
+    color: '#d0d0d0',
+    lineHeight: 22,
   },
 });
